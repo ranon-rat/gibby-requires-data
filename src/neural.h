@@ -44,10 +44,20 @@ struct layer
 
         // this erase the first value of size:nodes_layer
         size_nodes_layer->erase(size_nodes_layer->begin());
-        next_layer = &new_layer;
+        // this reduce the code
+        *number_of_layers--;
+        //if x>0 do this else do this
+        if (*number_of_layers)
+        {
+            // basic concurrency
+            new_layer.add_new_layer(number_of_layers, size_nodes_layer);
+            next_layer = &new_layer;
+        }
+    }
+    void change_node(){}
+    void summation() {
 
-        // this add a new value
-        new_layer.add_new_layer(number_of_layers, size_nodes_layer);
+
     }
 };
 class neural_network
