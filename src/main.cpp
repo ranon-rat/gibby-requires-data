@@ -1,10 +1,11 @@
 #include <iostream>
+#include <vector>
 #include "neural.h"
 using namespace std;
 
 int main(){
     vector<int> v;
-    for (int i = 0; i < 14; i++)
+    for (int i = 0; i <= 14; i++)
         v.push_back(i);
 
     /**
@@ -12,10 +13,12 @@ int main(){
     */
     layer x;
     x.add_new_layer(&v);
-    layer x2 = x.get_last();
+    x.summation();
+  
+    /*layer x2 = x.get_last();
     for (int i = 0; i < x2.nodes.size(); i++)
     {
         cout << x2.nodes.at(i).input_node << endl;
-    }
-        return 0;
+    }*/
+    return 0;
 }

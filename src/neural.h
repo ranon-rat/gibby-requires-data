@@ -7,7 +7,7 @@ class node
 public:
     float added_weight_node = 1;
     float weigth = 1;
-    float input_node = 0;
+    float input_node = 1;
     void adding(vector<node> node_vector)
     {
 
@@ -26,10 +26,10 @@ struct layer
     vector<node> nodes;
     layer *next_layer;
     // this add new nodes
-    void add_nodes(int *size)
+    void add_nodes(int size)
     {
         node n;
-        for (*size; *size > 0; *size--)
+        for (int i = size; i > 0; i--)
             nodes.push_back(n);
     };
 
@@ -48,12 +48,12 @@ struct layer
 
         // this is the new layer
         layer new_layer = {
-            id + 1,                    // 1->2->3->4->5
-            !size_nodes_layer->size(), //if x>0=true else = false
+            id + 1,                          // 1->2->3->4->5
+            !(size_nodes_layer->size() - 1), //if x>0=true else = false
         };
 
         // this is for add the nodes to the new layer
-        int *value = &size_nodes_layer->at(0);
+        int value = size_nodes_layer->at(0);
         new_layer.add_nodes(value);
         // this change the weight and the added weight for generate a new layer with new  values
         new_layer.change_weight_nodes();
@@ -70,22 +70,21 @@ struct layer
     // this is for get the last value
     layer get_last()
     {
-        
+        layer tmp = {
+            id,
+            last,
+            nodes,
+        };
+        if (!last)
             return next_layer->get_last();
-        
+        return tmp;
     }
     // this made the summation and the send you the output
     void summation()
     {
         if (!last)
         {
-            //wx1*wx2*wx3*wx4*wx5
-            /**         xw \
-             *    / xw<-xw<-xw
-             * xw<- xw<-xw<-xw->xw
-             *    \ xw<-xw<-xw 
-             *          xw /
-            */
+
             for (int i = 0; i < next_layer->nodes.size(); i++)
             {
                 next_layer->nodes.at(i).adding(nodes);
@@ -99,13 +98,15 @@ struct layer
         {
             cout << nodes.at(i).input_node << " " << (nodes.at(i).weigth);
         }
-        if (next_layer != NULL)
+        if (!last)
         {
-            cout << endl;
+            cout << "\n"
+                 << endl;
             next_layer->visualize();
         }
     }
 };
+
 /**
  * 
 */
