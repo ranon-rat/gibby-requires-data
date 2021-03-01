@@ -42,6 +42,18 @@ struct layer
             nodes.at(i).added_weight_node += -1 + (rand() % 140) * 0.0123;
         }
     }
+    layer get_last()
+    {
+        layer tmp = {
+            id,
+            last,
+            nodes,
+        };
+        if (!last)
+            tmp = next_layer->get_last();
+        //cout<<next_layer;
+        return tmp;
+    }
     // this is for add a new layer
     void add_new_layer(vector<int> *size_nodes_layer)
     {
@@ -54,10 +66,12 @@ struct layer
 
         // this is for add the nodes to the new layer
         int value = size_nodes_layer->at(0);
+
         new_layer.add_nodes(value);
         // this change the weight and the added weight for generate a new layer with new  values
         new_layer.change_weight_nodes();
         // this erase the first value of size:nodes_layer
+
         size_nodes_layer->erase(size_nodes_layer->begin()); // this reduce the code
                                                             //if x>0 do this else do this
         if (size_nodes_layer->size())
@@ -68,17 +82,7 @@ struct layer
         }
     }
     // this is for get the last value
-    layer get_last()
-    {
-        layer tmp = {
-            id,
-            last,
-            nodes,
-        };
-        if (!last)
-            return next_layer->get_last();
-        return tmp;
-    }
+
     // this made the summation and the send you the output
     void summation()
     {
@@ -94,14 +98,11 @@ struct layer
     }
     void visualize()
     {
-        for (int i = 0; i < nodes.size(); i++)
-        {
-            cout << nodes.at(i).input_node << " " << (nodes.at(i).weigth);
-        }
+        cout << "=================================================" << endl;
+        cout << nodes.size() << endl;
         if (!last)
         {
-            cout << "\n"
-                 << endl;
+            cout << "the id is " << id << endl;
             next_layer->visualize();
         }
     }

@@ -5,7 +5,7 @@ using namespace std;
 
 int main(){
     vector<int> v;
-    for (int i = 0; i <= 14; i++)
+    for (int i = 1; i <= 3; i++)
         v.push_back(i);
 
     /**
@@ -13,11 +13,9 @@ int main(){
     */
     layer x;
     x.add_new_layer(&v);
+    cout << x.next_layer->next_layer->nodes.size() << "\n"
+         << endl;
     //x.visualize();
-    layer x2 = x.get_last();
-    for (int i = 0; i < x2.nodes.size(); i++)
-    {
-        cout << x2.nodes.at(i).input_node << endl;
-    }
+
     return 0;
 }
