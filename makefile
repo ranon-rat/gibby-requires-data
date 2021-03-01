@@ -9,7 +9,7 @@ CPP_OBJ_FILES = $(patsubst src/%.cpp, build/%.o, $(CPP_SRC_FILES))
 
 build/%.o: src/%.cpp
 	mkdir -p $(dir $@) && \
-	$(CC) $(CFLAGS) -c -o $@ $^
+	$(CC) -Og -g $(CFLAGS) -c -o $@ $^
 
 
 .PHONY: clean build_target

@@ -8,13 +8,13 @@
             "name": "(lldb) Iniciar",
             "type": "cppdbg",
             "request": "launch",
-            "program": "./../src/a.out",
+            "program": "${workspaceFolder}/bin/main",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "MIMode": "lldb"
+            "preLaunchTask": "Build",
         }
     ]
 }
