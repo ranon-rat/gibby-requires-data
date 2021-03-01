@@ -1,11 +1,11 @@
 #include "neural.h"
-
 #include <iostream>
-
 void node::adding(const std::vector<node>& nodes) {
     for (const auto& node : nodes) {
         input_node += node.weight * node.input_node * node.added_weight_node;
+        
     }
+
 }
 
 // layer
@@ -24,8 +24,7 @@ void layer::randomize_weights() {
 
 layer& layer::get_last() {
     layer* p_last = this;
-    for (; p_last->next_layer; p_last = next_layer.get())
-        ;
+    for (; p_last->next_layer; p_last = next_layer.get());
     return *p_last;
 }
 
@@ -55,12 +54,18 @@ void layer::summation() {
         node.adding(this->nodes);
     }
 }
-
+void layer::generate_neural_network(int inputs_size, std::vector<int> hidden_layers, int outputs_size)
+{
+    std::vector<int> v = {inputs_size};
+    v.insert(std::end(v), std::begin(hidden_layers), std::end(hidden_layers));
+    v.push_back(outputs_size);
+    add_layers(v);
+}
 void layer::visualize() {
     std::cout << "=================================================\n";
     for (auto i : nodes)
-        std::cout << i.weight << " " << i.input_node << " ";
+        std::cout << "the weight is " << i.weight << " \nthe input is " << i.input_node << std::endl;
     if (!next_layer) return;
-    std::cout << "the id is " << id << std::endl;
+    std::cout << "\nthe id is " << id << std::endl;
     next_layer->visualize();
 }
