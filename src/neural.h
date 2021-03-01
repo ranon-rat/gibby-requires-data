@@ -24,6 +24,7 @@ struct layer {
     layer& get_last();
 
     // this made the summation and the send you the output
+    void update_all_layers();
     void summation();
     void visualize();
 };

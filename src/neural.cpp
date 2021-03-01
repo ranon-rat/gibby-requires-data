@@ -42,7 +42,13 @@ void layer::add_layers(const std::vector<int>& layer_sizes) {
         p_last = p_new_layer;
     }
 }
-
+void layer::update_all_layers()
+{
+    randomize_weights();
+    if (!next_layer)
+        return;
+    next_layer->update_all_layers();
+}
 void layer::summation() {
     if (!next_layer) return;
     for (auto& node : next_layer->nodes) {
@@ -52,7 +58,8 @@ void layer::summation() {
 
 void layer::visualize() {
     std::cout << "=================================================\n";
-    std::cout << nodes.size() << std::endl;
+    for (auto i : nodes)
+        std::cout << i.weight << " " << i.input_node << " ";
     if (!next_layer) return;
     std::cout << "the id is " << id << std::endl;
     next_layer->visualize();

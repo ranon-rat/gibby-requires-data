@@ -13,7 +13,9 @@ int main(){
     */
     layer x;
     x.add_layers(v);
-    cout << x.next_layer->next_layer->nodes.size() << "\n";
+    x.visualize();
+    x.update_all_layers();
+    x.visualize();
     //x.visualize();
 
     return 0;
