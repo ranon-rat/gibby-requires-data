@@ -13,12 +13,11 @@ int main(){
     */
     layer x;
     x.add_new_layer(&v);
-    x.summation();
-  
-    /*layer x2 = x.get_last();
+    //x.visualize();
+    layer x2 = x.get_last();
     for (int i = 0; i < x2.nodes.size(); i++)
     {
         cout << x2.nodes.at(i).input_node << endl;
-    }*/
+    }
     return 0;
 }

@@ -5,9 +5,9 @@ using namespace std;
 class node
 {
 public:
-    float added_weight_node = 1;
-    float weigth = 1;
-    float input_node = 1;
+    double added_weight_node = 1;
+    double weigth = 1;
+    double input_node = 1;
     void adding(vector<node> node_vector)
     {
 
