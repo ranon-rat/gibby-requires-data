@@ -2,11 +2,10 @@
 #include <iostream>
 #include <stdexcept>
 void node::adding(const std::vector<node>& nodes) {
-    for (const auto& node : nodes) {
-        input_node += node.weight * node.input_node * node.added_weight_node;
-        
+    for (const auto &n : nodes)
+    {
+        input_node += (n.weight * n.input_node) / added_weight_node;
     }
-
 }
 
 //=============layer=================\/
