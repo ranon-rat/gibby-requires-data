@@ -1,5 +1,6 @@
 #include "neural.h"
 #include <iostream>
+#include <stdexcept>
 void node::adding(const std::vector<node>& nodes) {
     for (const auto& node : nodes) {
         input_node += node.weight * node.input_node * node.added_weight_node;
@@ -8,7 +9,21 @@ void node::adding(const std::vector<node>& nodes) {
 
 }
 
-// layer
+//=============layer=================\/
+layer &layer::get_last()
+{
+    layer *p_last = this;
+    for (; p_last->next_layer; p_last = next_layer.get())
+        ;
+    return *p_last;
+}
+void layer::input_nodes(std::vector<double> n)
+{
+    if (n.size() != nodes.size())
+        throw std::invalid_argument("the size is different");
+    for (int i = 0; i < n.size(); i++)
+        nodes.at(i).input_node = n.at(i);
+}
 
 void layer::add_nodes(int amount) {
     node n;
@@ -20,12 +35,6 @@ void layer::randomize_weights() {
         node.weight  += -1 + (std::rand() % 140) * 0.0223;
         node.added_weight_node  += -1 + (std::rand() % 140) * 0.0123;
     }
-}
-
-layer& layer::get_last() {
-    layer* p_last = this;
-    for (; p_last->next_layer; p_last = next_layer.get());
-    return *p_last;
 }
 
 void layer::add_layers(const std::vector<int>& layer_sizes) {

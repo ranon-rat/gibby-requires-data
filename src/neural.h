@@ -14,16 +14,17 @@ struct layer {
     int id;
     std::vector<node> nodes;
     std::shared_ptr<layer> next_layer = nullptr;
+    // this is for get the last value
+    layer &get_last();
+    // this declare the inputs
+    void input_nodes(std::vector<double>);
     // this add new nodes
     void add_nodes(int size);
     // this change the weight of the node
     void randomize_weights();
     void generate_neural_network(int, std::vector<int>, int);
     // this is for add a new layer
-    void add_layers(const std::vector<int>& size_nodes_layer);
-    // this is for get the last value
-    layer& get_last();
-
+    void add_layers(const std::vector<int> &size_nodes_layer);
     // this made the summation and the send you the output
     void update_all_layers();
     void summation();
