@@ -13,7 +13,7 @@ class node {
 struct layer {
     int id;
     std::vector<node> nodes;
-    std::shared_ptr<layer> next_layer = nullptr;
+    layer *next_layer = nullptr;
     // this is for get the last value
     layer *get_last();
     // this declare the inputs
