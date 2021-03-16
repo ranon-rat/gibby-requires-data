@@ -9,6 +9,7 @@ make
 ```
 
 you will see some warnings but are nothing
+
 then for run it you only need to run the command 
 ```
 ./bin/main
