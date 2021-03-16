@@ -16,5 +16,5 @@ then for run it you only need to run the command
 ```
 and finally thats all
 you are going to see something like this
-![a](https://media.discordapp.net/attachments/820472030474272769/821346942478712842/Captura_de_Pantalla_2021-03-16_a_las_5.38.48.png)
+![a](https://media.discordapp.net/attachments/820472030474272769/821348378780631040/Captura_de_Pantalla_2021-03-16_a_las_5.45.01.png)
 
