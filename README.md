@@ -19,111 +19,105 @@ you are going to see something like this
 ```
 ============STARTING=============
 The id is 0
+adding weigth 1
+the weight is 1
+the input is 0
 =================================================
 The id is 1
 adding weigth 0.6027
 the weight is 0.1561
 the input is 0
-=================================================
-The id is 2
 adding weigth 1.4514
 the weight is 2.0739
 the input is 0
+=================================================
+The id is 2
 adding weigth 1.6236
 the weight is 2.007
 the input is 0
-=================================================
-The id is 3
 adding weigth 0.9594
 the weight is 0.9812
 the input is 0
+=================================================
+The id is 3
 adding weigth 0.3567
 the weight is 0.9589
 the input is 0
-=================================================
-The id is 4
 adding weigth 0.7995
 the weight is 0.446
 the input is 0
+=================================================
+The id is 4
 adding weigth 0.7626
 the weight is 2.4976
-the input is 0
-=================================================
-The id is 5
-adding weigth 1.2669
-the weight is 0.1561
 the input is 0
 =============INPUTS============
 The id is 0
+adding weigth 1
+the weight is 1
+the input is 0.1
 =================================================
 The id is 1
 adding weigth 0.6027
 the weight is 0.1561
-the input is 0.1
-=================================================
-The id is 2
+the input is 0
 adding weigth 1.4514
 the weight is 2.0739
 the input is 0
+=================================================
+The id is 2
 adding weigth 1.6236
 the weight is 2.007
 the input is 0
-=================================================
-The id is 3
 adding weigth 0.9594
 the weight is 0.9812
 the input is 0
+=================================================
+The id is 3
 adding weigth 0.3567
 the weight is 0.9589
 the input is 0
-=================================================
-The id is 4
 adding weigth 0.7995
 the weight is 0.446
 the input is 0
+=================================================
+The id is 4
 adding weigth 0.7626
 the weight is 2.4976
-the input is 0
-=================================================
-The id is 5
-adding weigth 1.2669
-the weight is 0.1561
 the input is 0
 ==============SUMMATION===========
 The id is 0
+adding weigth 1
+the weight is 1
+the input is 0.1
 =================================================
 The id is 1
 adding weigth 0.6027
 the weight is 0.1561
-the input is 0.1
-=================================================
-The id is 2
+the input is 0.16592
 adding weigth 1.4514
 the weight is 2.0739
-the input is 0.0107551
+the input is 0.068899
+=================================================
+The id is 2
 adding weigth 1.6236
 the weight is 2.007
-the input is 0.00961444
-=================================================
-The id is 3
+the input is 0.10396
 adding weigth 0.9594
 the weight is 0.9812
-the input is 0.0433617
+the input is 0.175933
+=================================================
+The id is 3
 adding weigth 0.3567
 the weight is 0.9589
-the input is 0.116628
-=================================================
-The id is 4
+the input is 1.06889
 adding weigth 0.7995
 the weight is 0.446
-the input is 0.193097
+the input is 0.476889
+=================================================
+The id is 4
 adding weigth 0.7626
 the weight is 2.4976
-the input is 0.202441
-=================================================
-The id is 5
-adding weigth 1.2669
-the weight is 0.1561
-the input is 0.467075
+the input is 1.62294
 ```
 
