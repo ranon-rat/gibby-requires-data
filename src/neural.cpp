@@ -9,12 +9,12 @@ void node::adding(const std::vector<node>& nodes) {
 }
 
 //=============layer=================\/
-layer &layer::get_last()
+layer *layer::get_last()
 {
     layer *p_last = this;
     for (; p_last->next_layer; p_last = next_layer.get())
         ;
-    return *p_last;
+    return p_last;
 }
 void layer::input_nodes(std::vector<double> n)
 {
@@ -37,7 +37,7 @@ void layer::randomize_weights() {
 }
 
 void layer::add_layers(const std::vector<int>& layer_sizes) {
-    layer* p_last = &get_last();
+    layer* p_last = get_last();
     // note that layer_sizes.size() must not exceed INT_MAX
     for (int i = 0; i < static_cast<int>(layer_sizes.size()); i++) {                        
         layer* p_new_layer = new layer;

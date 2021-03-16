@@ -15,7 +15,7 @@ struct layer {
     std::vector<node> nodes;
     std::shared_ptr<layer> next_layer = nullptr;
     // this is for get the last value
-    layer &get_last();
+    layer *get_last();
     // this declare the inputs
     void input_nodes(std::vector<double>);
     // this add new nodes
