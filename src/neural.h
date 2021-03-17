@@ -24,9 +24,10 @@ struct layer {
     void randomize_weights();
     void generate_neural_network(int, std::vector<int>, int);
     // this is for add a new layer
-    void add_layers(const std::vector<int> &size_nodes_layer);
+    void add_layers(std::vector<int> &size_nodes_layer);
     // this made the summation and the send you the output
     void update_all_layers();
     void summation();
     void visualize();
+    void clear_all_nodes();
 };

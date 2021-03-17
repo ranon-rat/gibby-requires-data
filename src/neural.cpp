@@ -41,9 +41,11 @@ void layer::randomize_weights()
     }
 }
 
-void layer::add_layers(const std::vector<int> &layer_sizes)
+void layer::add_layers(std::vector<int> &layer_sizes)
 {
     layer *p_last = get_last();
+    add_nodes(layer_sizes.at(0));
+    layer_sizes.erase(layer_sizes.begin());
     // note that layer_sizes.size() must not exceed INT_MAX
     for (int i = 0; i < static_cast<int>(layer_sizes.size()); i++)
     {
@@ -69,6 +71,16 @@ void layer::summation() {
         node.adding(this->nodes);
     }
     next_layer->summation();
+}
+void layer::clear_all_nodes()
+{
+    if (!next_layer)
+        return;
+    for (auto &node : next_layer->nodes)
+    {
+        node.input_node = 0;
+    }
+    next_layer->clear_all_nodes();
 }
 void layer::generate_neural_network(int inputs_size, std::vector<int> hidden_layers, int outputs_size)
 {
