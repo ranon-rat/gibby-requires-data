@@ -8,7 +8,7 @@ you only need to compile the programm running the command
 make
 ```
 
-you will see some warnings but are nothing
+you will see some warnings but they are nothing
 
 then for run it you only need to run the command 
 ```
