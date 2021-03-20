@@ -23,6 +23,9 @@ int main(){
         cout << "============ summation ============ \n"
              << "input : ";
         cin >> l;
+        if(!cin){
+            cout<<"puth a number retard"<<endl;
+        }
 
         x.input_nodes({l});
         x.summation();
