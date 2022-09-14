@@ -1,102 +1,256 @@
-#include "neural.h"
 #include <iostream>
-#include <stdexcept>
-void node::adding(const std::vector<node> &nodes)
+#include "math.h"
+#include "neural_network.h"
+
+using namespace std;
+float activation_func(int func, float x)
 {
-    for (const auto &n : nodes)
+    float value = 0;
+    switch (func)
     {
-        input_node += (n.weight * n.input_node) / added_weight_node;
+    case SIGMOID:
+        value = 1 / (1 + exp(x * (-1)));
+        break;
+    case TANH:
+        value = tanh(x);
+        break;
+    case RELU:
+        value = x > 0 ? x : 0;
+        break;
+    default:
+        break;
     }
+    return value;
 }
-
-//=============layer=================\/
-layer *layer::get_last()
+float dev_activation_func(int func, float x)
 {
-    layer *p_last = this;
-    for (; p_last->next_layer; p_last = p_last->next_layer)
-        ;
-    return p_last;
-}
-void layer::input_nodes(std::vector<double> n)
-{
-    if (n.size() != nodes.size())
-        throw std::invalid_argument("the size is different" + std::to_string(nodes.size()));
-    for (int i = 0; i < n.size(); i++)
-        nodes.at(i).input_node = n.at(i);
-}
-
-void layer::add_nodes(int amount)
-{
-    node n;
-    for (int i = 0; i < amount; i++)
-        nodes.push_back(n);
-}
-
-void layer::randomize_weights()
-{
-    for (auto &node : nodes)
+    float value = 0;
+    switch (func)
     {
-        node.weight += -1 + (std::rand() % 140) * 0.0223;
-        node.added_weight_node += -1 + (std::rand() % 140) * 0.0123;
+    case SIGMOID:
+        value = x * (1 - x);
+        break;
+    case TANH:
+        value = 1 - (x * x);
+        break;
+    case RELU:
+        value = x > 0 ? 1 : 0;
+        break;
+    default:
+        break;
     }
+    return value;
+}
+float cost(vector<float> target, vector<float> output)
+{
+    float err = 0;
+    for (int i = 0; i < (int)target.size(); i++)
+    {
+        err += pow(output[i] - target[i], 2);
+    }
+    return err;
 }
 
-void layer::add_layers(std::vector<int> &layer_sizes)
+void NeuralNetwork::new_neural_network(vector<int> nodesPerLayer, vector<int> activation_funcs)
 {
-    layer *p_last = get_last();
-    add_nodes(layer_sizes.at(0));
-    layer_sizes.erase(layer_sizes.begin());
-    // note that layer_sizes.size() must not exceed INT_MAX
-    for (int i = 0; i < static_cast<int>(layer_sizes.size()); i++)
+    srand(time(NULL));
+    activation_functions = activation_funcs;
+    for (int l = 0; l < (int)nodesPerLayer.size() - 1; l++)
     {
-        layer *p_new_layer = new layer;
-        p_new_layer->id = p_last->id + 1;
-        p_new_layer->add_nodes(layer_sizes[i]);
-        p_new_layer->randomize_weights();
-        p_last->next_layer = p_new_layer;
-        p_last = p_new_layer;
+        vector<float> bias_l;
+        vector<vector<float>> weights_l;
+
+        for (int n = 0; n < nodesPerLayer[l + 1]; n++)
+        {
+
+            bias_l.push_back(((float)rand() / (float)RAND_MAX) - 0.5);
+        }
+
+        for (int n = 0; n < nodesPerLayer[l]; n++)
+        {
+            vector<float> weight_node;
+            for (int w = 0; w < nodesPerLayer[l + 1]; w++)
+            {
+                weight_node.push_back(((float)rand() / (float)RAND_MAX) - 0.5);
+            }
+
+            weights_l.push_back(weight_node);
+        }
+
+        weights.push_back(weights_l);
+        bias.push_back(bias_l);
     }
 }
-void layer::update_all_layers()
+vector<vector<float>> NeuralNetwork::feed_foward(vector<float> input)
 {
-    randomize_weights();
-    if (!next_layer)
-        return;
-    next_layer->update_all_layers();
+    vector<vector<float>> layers;
+    layers.push_back(input);
+    for (int l = 0; l < (int)bias.size(); l++)
+    {
+        // layer*weights
+        vector<float> layer;
+        for (int n = 0; n < (int)bias[l].size(); n++)
+        {
+
+            layer.push_back(bias[l][n]);
+        }
+
+        for (int n = 0; n < (int)layers[l].size(); n++)
+        {
+            for (int w = 0; w < (int)bias[l].size(); w++)
+            {
+                layer[w] += weights[l][n][w] * layers[l][n];
+            }
+        }
+        for (int n = 0; n < (int)bias[l].size(); n++)
+        {
+
+            layer[n] = activation_func(activation_functions[l], layer[n]);
+        }
+
+        layers.push_back(layer);
+    }
+
+    return layers;
+}
+tuple<vector<vector<vector<float>>>, vector<vector<float>>> NeuralNetwork::backprop(vector<vector<float>> layers, vector<float> expected)
+{
+    vector<vector<vector<float>>> wd;
+    vector<vector<float>> bd;
+    vector<float> errors;
+
+    for (int i = 0; i < (int)layers.back().size(); i++)
+    {
+        errors.push_back(layers.back()[i] - expected[i]);
+    }
+
+    for (int l = (int)bias.size() - 1; l >= 0; l--)
+    {
+        vector<float> grad;
+        for (int n = 0; n < (int)bias[l].size(); n++)
+        {
+            grad.push_back(errors[n] * dev_activation_func(activation_functions[l], layers[l + 1][n]));
+        }
+ 
+
+        vector<vector<float>> deltgrad;
+        for (int n = 0; n < (int)weights[l].size(); n++)
+        {
+            vector<float> deltgrad_node;
+
+            for (int w = 0; w < (int)weights[l][n].size(); w++)
+            {
+                deltgrad_node.push_back(layers[l][n] * grad[w]);
+            }
+            deltgrad.push_back(deltgrad_node);
+        }
+        wd.insert(wd.begin(),deltgrad);
+        bd.insert(bd.begin(),grad);
+        if (!l)
+            continue;
+        vector<float> errcp = layers[l];
+        for (int n = 0; n < (int)layers[l].size(); n++)
+        {
+            float err = 0;
+            for (int i = 0; i < (int)errors.size(); i++)
+            {
+                err += weights[l][n][i] * errors[i];
+            }
+            errcp[n] = err;
+        }
+        errors = errcp;
+    }
+    return {wd, bd};
+}
+void NeuralNetwork::update(int size, float learning_rate, vector<vector<vector<float>>> wd, vector<vector<float>> bd)
+{
+    for (int l = 0; l < (int)bias.size(); l++)
+    {
+        // layer*weights
+        for (int n = 0; n < (int)weights[l].size(); n++)
+        {
+            for (int w = 0; w < (int)weights[l][n].size(); w++)
+            {
+                weights[l][n][w] -= (wd[l][n][w] * learning_rate) / size;
+            }
+        }
+        for (int n = 0; n < (int)bias[l].size(); n++)
+        {
+
+            bias[l][n] -= (bd[l][n] * learning_rate) / size;
+        }
+    }
+}
+void NeuralNetwork::train(float learning_rate, int epoch, vector<vector<float>> dataset, vector<vector<float>> expected)
+{
+    for (int e = 0; e < epoch; e++)
+    {
+        vector<vector<vector<float>>> wdsum;
+        vector<vector<float>> bdsum;
+        float err = 0;
+        for (int d = 0; d < (int)dataset.size(); d++)
+        {
+            vector<vector<float>> layers = feed_foward(dataset[d]);
+
+            auto bdanwd = backprop(layers, expected[d]);
+            if (d == 0)
+            {
+                wdsum = get<0>(bdanwd);
+                bdsum = get<1>(bdanwd);
+                continue;
+            }
+            if (!(e % 10))
+            {
+                err += cost(expected[d], layers.front());
+            }
+            for (int l = 0; l < (int)bias.size(); l++)
+            {
+
+                // layer*weights
+                for (int n = 0; n < (int)weights[l].size(); n++)
+                {
+                    for (int w = 0; w < (int)weights[l][n].size(); w++)
+                    {
+                        wdsum[l][n][w] += get<0>(bdanwd)[l][n][w];
+                    }
+                }
+                for (int n = 0; n < (int)bias[l].size(); n++)
+                {
+
+                    bdsum[l][n] += get<1>(bdanwd)[l][n];
+                }
+            }
+        }
+        update(dataset.size(), learning_rate, wdsum, bdsum);
+        if (!(e % 10))
+        {
+            printf("| error : %.6f |epoch %d\n", err, e);
+        }
+    }
+}
+vector<float> NeuralNetwork::predict(vector<float> input)
+{
+    return feed_foward(input).back();
 }
 
-void layer::summation() {
-    if (!next_layer) return;
-    for (auto& node : next_layer->nodes) {
-        node.adding(this->nodes);
-    }
-    next_layer->summation();
-}
-void layer::clear_all_nodes()
+void save_model(string filename,NeuralNetwork nn)
 {
-    if (!next_layer)
-        return;
-    for (auto &node : next_layer->nodes)
-    {
-        node.input_node = 0;
-    }
-    next_layer->clear_all_nodes();
+    remove(filename.c_str());
+    ofstream model_file;
+    model_file.open(filename, ios::app);
+    model_file.write((char *)&nn, sizeof(nn));
+    model_file.close();
 }
-void layer::generate_neural_network(int inputs_size, std::vector<int> hidden_layers, int outputs_size)
+
+NeuralNetwork open_model(string filename)
 {
-    id = 0;
-    std::vector<int> v = {inputs_size};
-    v.insert(std::end(v), std::begin(hidden_layers), std::end(hidden_layers));
-    v.push_back(outputs_size);
-    add_layers(v);
-}
-void layer::visualize()
-{
-    std::cout << "The id is " << id << std::endl;
-    for (auto i : nodes)
-        std::cout << "the weight is " << i.weight << " \nthe input is " << i.input_node << std::endl;
-    if (!next_layer)
-        return;
-    std::cout << "=================================================\n";
-    next_layer->visualize();
+
+    NeuralNetwork NN;
+    
+    ifstream model_file;
+    model_file.open(filename, std::ios::in);
+    model_file.seekg(0);
+    model_file.read((char *)&NN, sizeof(NN));
+    model_file.close();
+    return NN;
 }
