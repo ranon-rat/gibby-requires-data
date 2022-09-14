@@ -1,5 +1,7 @@
 
-# neuralDecisions
+# gibby-requires-data 
+## what it is?
+Its a simple neural network lib that i made just for fun , it requires data for being trained and just that 
 
 ## how to use it 
 you only need to compile the programm running the command 
