@@ -1,55 +1,9 @@
 #include <iostream>
-#include "math.h"
 #include "neural_network.h"
+#include "activation_funcs.h"
+#include "math.h"
 
 using namespace std;
-float activation_func(int func, float x)
-{
-    float value = 0;
-    switch (func)
-    {
-    case SIGMOID:
-        value = 1 / (1 + exp(x * (-1)));
-        break;
-    case TANH:
-        value = tanh(x);
-        break;
-    case RELU:
-        value = x > 0 ? x : 0;
-        break;
-    default:
-        break;
-    }
-    return value;
-}
-float dev_activation_func(int func, float x)
-{
-    float value = 0;
-    switch (func)
-    {
-    case SIGMOID:
-        value = x * (1 - x);
-        break;
-    case TANH:
-        value = 1 - (x * x);
-        break;
-    case RELU:
-        value = x > 0 ? 1 : 0;
-        break;
-    default:
-        break;
-    }
-    return value;
-}
-float cost(vector<float> target, vector<float> output)
-{
-    float err = 0;
-    for (int i = 0; i < (int)target.size(); i++)
-    {
-        err += pow(output[i] - target[i], 2);
-    }
-    return err;
-}
 
 void NeuralNetwork::new_neural_network(vector<int> nodesPerLayer, vector<int> activation_funcs)
 {
@@ -59,13 +13,13 @@ void NeuralNetwork::new_neural_network(vector<int> nodesPerLayer, vector<int> ac
     {
         vector<float> bias_l;
         vector<vector<float>> weights_l;
-
+        // i add to the bias of this layer a random value
         for (int n = 0; n < nodesPerLayer[l + 1]; n++)
         {
 
             bias_l.push_back(((float)rand() / (float)RAND_MAX) - 0.5);
         }
-
+        // i need to generate the weights so this is really
         for (int n = 0; n < nodesPerLayer[l]; n++)
         {
             vector<float> weight_node;
@@ -83,17 +37,17 @@ void NeuralNetwork::new_neural_network(vector<int> nodesPerLayer, vector<int> ac
 }
 vector<vector<float>> NeuralNetwork::feed_foward(vector<float> input)
 {
-    vector<vector<float>> layers;
-    layers.push_back(input);
+    vector<vector<float>> layers = {input};
     for (int l = 0; l < (int)bias.size(); l++)
     {
-        // layer*weights
         vector<float> layer;
+        // i hate this so much but I dont know what else i can do
         for (int n = 0; n < (int)bias[l].size(); n++)
         {
 
             layer.push_back(bias[l][n]);
         }
+        // layer*weights
 
         for (int n = 0; n < (int)layers[l].size(); n++)
         {
@@ -102,6 +56,7 @@ vector<vector<float>> NeuralNetwork::feed_foward(vector<float> input)
                 layer[w] += weights[l][n][w] * layers[l][n];
             }
         }
+        // a(layer+bias)
         for (int n = 0; n < (int)bias[l].size(); n++)
         {
 
@@ -131,7 +86,6 @@ tuple<vector<vector<vector<float>>>, vector<vector<float>>> NeuralNetwork::backp
         {
             grad.push_back(errors[n] * dev_activation_func(activation_functions[l], layers[l + 1][n]));
         }
- 
 
         vector<vector<float>> deltgrad;
         for (int n = 0; n < (int)weights[l].size(); n++)
@@ -144,8 +98,8 @@ tuple<vector<vector<vector<float>>>, vector<vector<float>>> NeuralNetwork::backp
             }
             deltgrad.push_back(deltgrad_node);
         }
-        wd.insert(wd.begin(),deltgrad);
-        bd.insert(bd.begin(),grad);
+        wd.insert(wd.begin(), deltgrad);
+        bd.insert(bd.begin(), grad);
         if (!l)
             continue;
         vector<float> errcp = layers[l];
@@ -233,7 +187,7 @@ vector<float> NeuralNetwork::predict(vector<float> input)
     return feed_foward(input).back();
 }
 
-void save_model(string filename,NeuralNetwork nn)
+void save_model(string filename, NeuralNetwork nn)
 {
     remove(filename.c_str());
     ofstream model_file;
@@ -246,7 +200,7 @@ NeuralNetwork open_model(string filename)
 {
 
     NeuralNetwork NN;
-    
+
     ifstream model_file;
     model_file.open(filename, std::ios::in);
     model_file.seekg(0);

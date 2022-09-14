@@ -1,6 +1,5 @@
 
 # neuralDecisions
-![asd](https://media.discordapp.net/attachments/820472030474272769/821305321678831616/161424911_2866930366899394_355471721192024575_n.png?width=1674&height=942)
 
 ## how to use it 
 you only need to compile the programm running the command 
@@ -16,5 +15,7 @@ then for run it you only need to run the command
 ```
 and finally thats all
 you are going to see something like this
-![a](https://media.discordapp.net/attachments/793458810265403393/821350220977143808/Captura_de_Pantalla_2021-03-16_a_las_5.50.15.png)
+![a](https://media.discordapp.net/attachments/907631182240436305/1019724414608216154/unknown.png)
+
+
 
