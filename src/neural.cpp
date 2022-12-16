@@ -2,7 +2,7 @@
 #include "neural_network.h"
 #include "activation_funcs.h"
 #include "math.h"
-
+//
 using namespace std;
 
 void NeuralNetwork::new_neural_network(vector<int> nodesPerLayer, vector<int> activation_funcs)
