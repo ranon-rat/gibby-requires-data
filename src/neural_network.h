@@ -4,6 +4,7 @@
 #define SIGMOID 1
 #define TANH 2
 #define RELU 3
+//
 class NeuralNetwork
 {
 public:
